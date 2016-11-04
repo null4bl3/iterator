@@ -9,7 +9,7 @@ Examine Database:
 [[https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131441.png|alt=examine]]
 
 Insert To Database:
-[[https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131454.png|alt=insert]]
+[insert](https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131454.png)
 
 
 Iterate through textfile:
