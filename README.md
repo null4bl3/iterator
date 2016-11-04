@@ -6,11 +6,10 @@ To help me with that i have previously used some crude Java applications i have 
 
 
 Examine Database:
-[[https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131441.png|alt=examine]]
+![examine](https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131441.png|alt=examine)
 
 Insert To Database:
 ![insert](https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131454.png)
 
 
-Iterate through textfile:
-[[https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131625.png|alt=iterate_file]]
+![iterate](https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131625.png)
