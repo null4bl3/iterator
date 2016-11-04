@@ -1,0 +1,146 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+	height: auto;
+	overflow:visible;
+}
+
+body {
+	font-family: -apple-system, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+header {
+	position: absolute;
+	width: 500px;
+	height: 250px;
+	top: 50%;
+	left: 50%;
+	margin-top: -125px;
+	margin-left: -250px;
+	text-align: center;
+}
+
+header h1 {
+	font-size: 60px;
+	font-weight: 100;
+	margin: 0;
+	padding: 0;
+}
+
+@font-face {
+    font-family:"SourceSansPro";
+    src: url("./fonts/SourceSansPro-Regular.ttf")
+}
+
+
+.alerts-show-hide {
+  transition: all linear 0.5s;
+}
+.alerts-show-hide.ng-hide {
+  opacity: 0;
+}
+
+
+.selected {
+	color: green;
+}
+
+.error {
+	color: #eb4f4f;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+.onRequired {
+   background-color:#f26d6d;
+}
+
+.main {
+	width: 100%;
+}
+
+#main_content::-webkit-scrollbar-thumb{
+	background-color:#6b7d75;
+	border-radius:10px;
+	height: 10px;
+}
+#main_content::-webkit-scrollbar-thumb:hover{
+	background-color:#658a79;
+	border:1px solid #333333;
+}
+#main_content::-webkit-scrollbar-thumb:active{
+	background-color:#5b7a6d;
+	border:1px solid #333333;
+}
+#main_content::-webkit-scrollbar{
+	width:4px;
+	background-color:#373636;
+}
+#main_content {
+	width: 90%;
+	max-height: 85%;
+	min-height: 85%;
+	overflow: auto;
+}
+
+#iterate_table::-webkit-scrollbar-thumb{
+	background-color:#6b7d75;
+	border-radius:10px;
+	height: 10px;
+}
+#iterate_table::-webkit-scrollbar-thumb:hover{
+	background-color:#658a79;
+	border:1px solid #333333;
+}
+#iterate_table::-webkit-scrollbar-thumb:active{
+	background-color:#5b7a6d;
+	border:1px solid #333333;
+}
+#iterate_table::-webkit-scrollbar{
+	width:4px;
+	background-color:#373636;
+}
+#iterate_table {
+	max-height: 55vh;
+	overflow: auto;
+}
+
+#examine_table::-webkit-scrollbar-thumb{
+	background-color:#6b7d75;
+	border-radius:10px;
+	height: 10px;
+}
+#examine_table::-webkit-scrollbar-thumb:hover{
+	background-color:#658a79;
+	border:1px solid #333333;
+}
+#examine_table::-webkit-scrollbar-thumb:active{
+	background-color:#5b7a6d;
+	border:1px solid #333333;
+}
+#examine_table::-webkit-scrollbar{
+	width:4px;
+	background-color:#373636;
+}
+#examine_table {
+	max-height: 75vh;
+	overflow: auto;
+}
+
+.alerting {
+	text-align: left;
+	font-size: 11px;
+	text-transform: uppercase;
+	color:#FFFFF;
+}
+
+.enclose {position:fixed;bottom:10px;width:100%;}
+
+.encloseDeux {position:fixed;bottom:50px;width:100%;}

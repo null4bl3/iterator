@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ITERATOR</title>
+
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <script>
+			window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+		</script>
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./node_modules/animate.css/animate.min.css">
+
+    <script src="./node_modules/angular/angular.js" charset="utf-8"></script>
+		<script src="./node_modules/angular-animate/angular-animate.js" charset="utf-8"></script>
+		<script src="./node_modules/bootstrap/dist/js/bootstrap.js" charset="utf-8"></script>
+
+		<script src="./js/app.js" charset="utf-8"></script>
+</head>
+
+<body ng-app="APP" ng-controller="MAIN" ng-cloak>
+    <div id="wrapper">
+  <!-- SIDEBAR -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                      <img src="./images/iterator_small.png" alt="" />
+                        <b> ITERATOR</b>
+                    </a>
+                </li>
+                <!-- WORK AROUND FOR HANDLING THE SCOPE DIFFERENCE IN ELECTRON -->
+                <li id="connection" ng-if="connection" style="background-color: #272B30">
+    							<a href="" ng-click="handleTab(1)">CONNECTION</a>
+    						</li>
+                <li id="connection" ng-if="!connection" class="active">
+    							<a href="" ng-click="handleTab(1)">CONNECTION</a>
+    						</li>
+
+    						<li ng-hide="!allConnected" ng-if="examine" id="examine" style="background-color: #272B30">
+    							<a style="color: #FFFFFF" href="" ng-click="handleTab(2)">EXAMINE</a>
+    						</li>
+    						<li ng-hide="!allConnected" id="examine" ng-if="!examine">
+    							<a href="" ng-click="handleTab(2)">EXAMINE</a>
+    						</li>
+
+    						<li ng-hide="!allConnected" id="insert" ng-if="insert" style="background-color: #272B30">
+    							<a style="color: #FFFFFF" href="" ng-click="handleTab(3)">INSERT</a>
+    						</li>
+    						<li ng-hide="!allConnected" ng-if="!insert" id="insert">
+    							<a href="" ng-click="handleTab(3)">INSERT</a>
+    						</li>
+
+    						<li ng-hide="!allConnected" id="update" ng-if="update" style="background-color: #272B30">
+    							<a style="color: #FFFFFF" href="" ng-click="handleTab(4)">ITERATE TABLE</a>
+    						</li>
+    						<li ng-hide="!allConnected" id="update" ng-if="!update">
+    							<a href="" ng-click="handleTab(4)">ITERATE TABLE</a>
+    						</li>
+
+    						<li ng-hide="!allConnected" id="iterate" ng-if="iterate" style="background-color: #272B30">
+    							<a style="color: #FFFFFF" href="" ng-click="handleTab(5)">ITERATE FILE</a>
+    						</li>
+    						<li ng-hide="!allConnected" id="iterate" ng-if="!iterate">
+    							<a href="" ng-click="handleTab(5)">ITERATE FILE</a>
+    						</li>
+                <hr>
+                <li class="alerting alert alert-success alerts-show-hide" ng-show="alert_good" id="alert_good" style="text-align: left; font-size: 11px">
+                  <strong>
+                    <br>
+                    {{alert_message.title}}
+                    <br>
+                    {{alert_message.message}}.
+                    <br>
+                </strong>
+                </li>
+                <li class="alerting alert alert-danger alerts-show-hide" ng-show="alert_bad" id="alert_bad">
+                    <strong>
+                      <br>
+                      {{alert_message.title}}
+                    <br>
+                    {{alert_message.message}}.
+                    <br>
+                  </strong>
+                </li>
+                <li>
+                  <div class="encloseDeux">
+                    <button style="width: 5%; min-width:200px" type="button" class="btn btn-default btn-xs" name="button" ng-click="about()"><b>ABOUT</b></button>
+                  </div>
+                </li>
+                <li>
+                  <div class="enclose">
+                    <button style="width: 5%; min-width:200px" type="button" class="btn btn-danger btn-xs" name="button" ng-click="exitProgram()"><b>EXIT</b></button>
+                  </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="col-lg-6" ng-show="database && !connection">
+                        <label class="label label-default">DATABASE</label>
+                        <select ng-change="dbChange(database)" class="form-control" ng-model="database" ng-options="db for db in database_list" name="">
+                          <option selected value="" hidden>SELECT DATABASE</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-6" ng-show="database && !connection">
+                        <label class="label label-default">TABLE</label>
+                        <select ng-if="db_good" ng-change="tblChange(table)" class="form-control" ng-model="table" ng-options="tbl for tbl in table_list" name="">
+                          <option selected value="" hidden>SELECT TABLE</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6"></div>
+                  </div>
+                  <br>
+                  <hr style="border-color:white">
+                  <br>
+                    <div class="col-lg-12">
+                        <!-- CONNECTION TAB -->
+                        				<span id="main_content" class="col-lg-10 col-md-8 col-sm-10 col-xs-11" style="postition:fixed; padding-right: 50px">
+                        					<div class="row" ng-show="connection">
+                        						<div class="list-group-item col-lg-3">
+                        							<div style="float: right" class="list-inline">
+                        								<span style="padding-left: 5px"></span>
+                        							</div>
+                        							<div ng-show="credentials">
+                        								<br>
+                        								<span class="">
+                        									<div style="text-align: center">
+                        										<label class="label label-default">LOG IN AND HOST SELECTION</label>
+                        									</div>
+                        									<br>
+                        									<label class="label label-default" style="padding:2px; background-color: #262626">USERNAME</label>
+                        									<input ng-model="username" type="text" name="username" value="root" placeholder="root" class="form-control" required>
+                        									<label class="label label-default" style="padding:2px; background-color: #262626">PASSWORD</label>
+                        									<input ng-model="password" type="text" name="password" value="" class="form-control">
+                        									<label class="label label-default" style="padding:2px; background-color: #262626">HOST</label>
+                        									<input ng-model="host" type="text" name="host" value="localhost" placeholder="localhost" class="form-control">
+                        									<label class="label label-default" style="padding:2px; background-color: #262626">PORT</label>
+                        									<input ng-model="port" type="number" name="port" value="3306" placeholder="3306" class="form-control">
+                        									<br><br>
+                        									<button ng-disabled="connection_good" style="width: 100%" type="button" class="btn btn-success" name="button" ng-click="connect()">
+                        										<b>CONNECT</b>
+                        									</button>
+                        									<br>
+                        								</span>
+                        							</div>
+                        						</div>
+                        						<div class="col-lg-1"></div>
+                        						<div class="list-group-item col-lg-3" ng-show="connection_good">
+                        							<span >
+                        								<br>
+                        								<div style="text-align: center">
+                        									<label class="label label-default">SELECT DATABASE AND TABLE</label>
+                        									<br><br>
+                        									<button ng-show="table" type="button" class="btn btn-danger btn-xs" name="button" ng-click="endConnection()" ng-disabled="!allConnected">
+                        										<b>CLOSE CONNECTION</b>
+                        									</button>
+                        								</div>
+                        								<br><br>
+                        								<select ng-change="dbChange(database)" class="form-control" ng-model="database" ng-options="db for db in database_list" name="">
+                        									<option selected value="" hidden>SELECT DATABASE</option>
+                        								</select>
+                        								<br>
+                        								<select ng-if="db_good" ng-change="tblChange(table)" class="form-control" ng-model="table" ng-options="tbl for tbl in table_list" name="">
+                        									<option selected value="" hidden>SELECT TABLE</option>
+                        								</select>
+                        								<br>
+                        							</span>
+                        						</div>
+                        					</div>
+
+                        					<!-- EXAMINE TAB -->
+                        					<div class="row" ng-show="examine">
+                        						<div>
+                        							<div class="list-group-item" id="examine_table">
+                        								<br>
+                        								<table class="table table-striped table-bordered">
+                        									<thead style="color:white">
+                        										<th>
+                        											FIELD
+                        										</th>
+                        										<th>
+                        											TYPE
+                        										</th>
+                        										<th>
+                        											NULL
+                        										</th>
+                        										<th>
+                        											KEY
+                        										</th>
+                        										<th>
+                        											DEFAULT
+                        										</th>
+                        										<th>
+                        											EXTRA
+                        										</th>
+                        									</thead>
+                        									<tbody ng-repeat="item in field_list">
+                        										<td>
+                        											<b style="color: #FFFFFF">
+                        												{{item.Field}}
+                        											</b>
+                        										</td>
+                        										<td>
+                        											{{item.Type}}
+                        										</td>
+                        										<td>
+                        											{{item.Null}}
+                        										</td>
+                        										<td>
+                        											{{item.Key}}
+                        										</td>
+                        										<td>
+                        											{{item.Default}}
+                        										</td>
+                        										<td>
+                        											{{item.Extra}}
+                        										</td>
+                        									</tbody>
+                        								</table>
+                        							</div>
+                        							<br><br>
+                        						</div>
+                        					</div>
+
+                        					<!-- INSERT TAB -->
+
+                        					<div class="row" ng-show="insert">
+                        						<div>
+                        							<div class="list-group-item" style="padding-bottom: 50px">
+                        								<br>
+                        								<table class="table table-striped table-bordered">
+                        									<thead>
+                        										<th width="200" style="color:white">
+                        											FIELDS
+                        										</th>
+                        										<th width="100"></th>
+                        										<th style="color:white">
+                        											DATA
+                        										</th>
+                        									</thead>
+                        								</table>
+                        								<div id="iterate_table">
+                        								<table class="table table-striped table-bordered">
+                        									<tbody ng-repeat="item in field_list">
+                        										<td width="200" style="color:white">
+                                              <b>
+                                                {{item.Field}}
+                                              </b>
+                        										</td>
+                        										<td width="100">
+                        											<table>
+                        												<td style="padding-bottom:3px">
+                        													<span class="label label-primary" ng-if="item.Key === 'PRI'">
+                        														<b>PRIMARY KEY</b>
+                        													</span>
+                        												</td>
+                        												<td style="padding-bottom:3px">
+                        													<span class="label label-primary" ng-if="item.Extra === 'auto_increment'">
+                        														<b>AUTO INCREMENT</b>
+                        													</span>
+                        												</td>
+                        												<td ng-if="item.Null === 'NO' && item.Key !== 'PRI'" style="padding-bottom:3px">
+                        													<span class="label label-warning">
+                        														REQUIRED
+                        													</span>
+                        												</td>
+                        											</table>
+                        										</td>
+                        										<td>
+                        											<input
+                        												style="height: 35px"
+                        												ng-model="insertForm[item.Field]"
+                        												type="text"
+                        												class="form-control"
+                        												name="name"
+                        												value=""
+                        												ng-disabled="item.Key === 'PRI' || item.Extra === 'auto_increment'"
+                        												ng-style="{'background-color': item.Null === 'NO' && !insertForm[item.Field] ?  '#fecac1': 'white'}">
+                        										</td>
+                        									</tbody>
+                        								</table>
+                        								</div>
+                        								<table class="table">
+                        									<br>
+                        									<tfoot>
+                        										<td width="20%" style="background-color: #32383E"></td>
+                        										<td style="background-color: #32383E">
+                        											<button style="float:right" type="button" class="btn btn-success btn-sm" name="button" ng-click="insertRow()">
+                        												<b>INSERT ROW</b>
+                        											</button>
+                        										</td>
+                        									</tfoot>
+                        								</table>
+                        							</div>
+                        						</div>
+                        					</div>
+
+                        					<!-- ITERATE TABLE / UPDATE TAB -->
+
+                        					<div class="row" ng-show="update">
+                        						<div>
+                        							<div class="list-group-item" style="padding-bottom: 50px">
+                        								<br>
+                        								<table width="100%">
+                        									<td>
+                        										<input type="text" class="form-control" name="search" value="" ng-model="filterTerm" ng-change="filterBySearch(filterTerm)" placeholder="Filter Content">
+                        									</td>
+                        								</table>
+                        								<br><br>
+                        								<table class="table table-striped table-bordered" >
+                        									<thead>
+                        										<th width="200" style="color:white">
+                        											FIELD
+                        										</th>
+                        										<th width="100"></th>
+                        										<th style="color:white">
+                        											DATA
+                        										</th>
+                        										</thead>
+                        								</table>
+                        								<div id="iterate_table" style="border-bottom: solid white 1px">
+                        								<table class="table table-striped table-bordered"  >
+                        									<tbody ng-repeat="item in field_list" >
+                        										<td width="200" style="color:white">
+                                              <b>
+                                                {{item.Field}}
+                                              </b>
+                        										</td>
+                        										<td width="100">
+                        											<table>
+                        												<td style="padding-bottom:3px">
+                        													<span class="label label-primary" ng-if="item.Key === 'PRI'">
+                        														<b>PRIMARY KEY</b>
+                        													</span>
+                        												</td>
+                        												<td style="padding-bottom:3px">
+                        													<span class="label label-primary" ng-if="item.Extra === 'auto_increment'">
+                        														<b>AUTO INCREMENT</b>
+                        													</span>
+                        												</td>
+                        												<td ng-if="item.Null === 'NO' && item.Key !== 'PRI'" style="padding-bottom:3px">
+                        													<span class="label label-warning">
+                        														REQUIRED
+                        													</span>
+                        												</td>
+                        											</table>
+                        										</td>
+                        										<td>
+                        											<input style="height: 35px" type="text" class="form-control" ng-model="inFocus[item.Field]" name="name" value="{{inFocus[item.Field]}}" ng-disabled="item.Key === 'PRI'" ng-style="{'background-color': item.Null === 'NO'  ?  '#fecac1': 'white'}">
+                        										</td>
+                        									</tbody>
+                        								</table>
+                        								</div>
+                        								<br>
+                        								<table width="100%" style="background-color: #32383E" >
+                        									<td width="55%" style="background-color: #32383E">
+                        										<table style="float:right">
+                                              <td width="200" style="background-color: #32383E; text-align: center">
+                                                <b class="btn btn-default btn-sm" style="font-size: 14px; cursor:pointer" ng-click="counter = 1">
+                                                  MIN : 1
+                                                </b>
+                                              </td>
+                        											<td>
+                        												<button type="button" class="btn btn-default btn-sm" name="button" ng-click="counter = counter - 1" ng-disabled="counter <= 0">
+                        													<b>
+                        														- 1
+                        													</b>
+                        												</button>
+                        											</td>
+                        											<td>
+                        												<input ng-model="counter" style="height: 30px; width: 80px; text-align: center" type="number" class="form-control" min="0" name="counter" ng-value="counter" >
+                        											</td>
+                        											<td>
+                        												<button type="button" class="btn btn-default btn-sm" name="button" ng-click="counter = counter + 1" ng-disabled="counter >= totalLength">
+                        													<b>
+                        														+ 1
+                        													</b>
+                        												</button>
+                        											</td>
+                        											<td width="200" style="background-color: #32383E; text-align: center">
+                        												<b class="btn btn-default btn-sm" style="font-size: 14px; cursor:pointer" ng-click="counter = totalLength - 1">
+                        													MAX : {{totalLength}}
+                        												</b>
+                        											</td>
+                        										</table>
+                        									</td>
+                        									<td style="float:right" style="background-color: #32383E">
+                        										<table style="background-color: #32383E">
+                        											<td width="200">
+                        												<select class="form-control" style="height: 35px; font-size: 12px" ng-model="iterate_table_identifier" name="fields" ng-options="field.Field for field in field_list" ng-change="setID()">
+                        													<option value="" selected hidden>
+                        														<b>SELECT IDENTIFIER</b>
+                        													</option>
+                        												</select>
+                        											</td>
+                        											<td width="20" style="background-color: #32383E"></td>
+                        											<td style="background-color: #32383E">
+                        												<button type="button" class="btn btn-danger btn-sm" name="button" ng-disabled="!idField" ng-click="deleteARow()">
+                        													<b>DELETE ROW</b>
+                        												</button>
+                        											</td>
+                        											<td width="20" style="background-color: #32383E"></td>
+                        											<td style="background-color: #32383E">
+                        												<button type="button" class="btn btn-success btn-sm" name="button" ng-disabled="!idField" ng-click="updateRow()">
+                        													<b>SAVE CHANGES</b>
+                        												</button>
+                        											</td>
+                        										</table>
+                        									</td>
+                        								</table>
+                        							</div>
+                        						</div>
+                        					</div>
+
+                        					<!-- ITERATE FILE TAB -->
+
+                        					<div class="row" ng-show="iterate">
+                        						<div>
+                        							<div class="list-group-item" style="padding-bottom: 50px">
+                        								<br>
+                        								<table width="100%">
+                        									<td width="10%">
+                        										<label class="btn btn-info btn-file" style="width:100%">
+                        										 <b>CHOOSE FILE</b>
+                        											<input type="button" style="display: none;" ng-model="selectedFile" ng-click="fileSelect()">
+                        										</label>
+                        									</td>
+                                          <td width="20"></td>
+                        									<td width="500">
+                        										<p class="list-group-item">
+                                              <b style="color:white">
+                                                {{selectedFile}}
+                                              </b>
+                        										</p>
+                        									</td>
+                        								</table>
+                        								<br>
+                        								<textarea ng-model="lineInScope" name="name" class="form-control" rows="8" cols="40">{{lineInScope}}</textarea>
+                        								<br><br>
+                                          <table width="100%" style="background-color: #32383E" >
+                                            <td width="55%" style="background-color: #32383E">
+                                              <table style="float:right">
+                                                <td width="400" style="background-color: #32383E;"></td>
+                                                <td width="200" style="background-color: #32383E; text-align: center">
+                                                  <b class="btn btn-default btn-sm" style="font-size: 14px; cursor:pointer" ng-click="counterFile = 0">
+                                                    MIN : 0
+                                                  </b>
+                                                </td>
+                                                <td>
+                                                  <button type="button" class="btn btn-default btn-sm" name="button" ng-click="counterFile = counterFile - 1" ng-disabled="counterFile <= 0">
+                                                    <b>
+                                                      - 1
+                                                    </b>
+                                                  </button>
+                                                </td>
+                                                <td>
+                                                  <input ng-model="counterFile" style="height: 33px; width: 80px; text-align: center" type="number" class="form-control" min="0" name="counterFile" ng-value="counterFile">
+                                                </td>
+                                                <td>
+                                                  <button type="button" class="btn btn-default btn-sm" name="button" ng-click="counterFile = counterFile + 1" ng-disabled="counterFile >= numberOfLines">
+                                                    <b>
+                                                      + 1
+                                                    </b>
+                                                  </button>
+                                                </td>
+                                                <td width="200" style="background-color: #32383E; text-align: center">
+                                                  <b class="btn btn-default btn-sm" style="font-size: 14px; cursor:pointer" ng-click="counterFile = numberOfLines - 1">
+                                                    MAX : {{numberOfLines}}
+                                                  </b>
+                                                </td>
+                                              </table>
+                                            </td>
+                                            <td style="float:right" style="background-color: #32383E">
+                                              <table style="background-color: #32383E">
+                                                <td width="200">
+                                                  <select class="form-control" style="height: 35px; font-size: 12px" ng-model="fileField" name="fields" ng-options="field.Field for field in file_field_list" ng-change="setIDForFile()">
+                                                    <option value="" selected hidden>
+                                                      <b>INSERT AS ..</b>
+                                                    </option>
+                                                  </select>
+                                                </td>
+                                                <td width="20" style="background-color: #32383E"></td>
+                                                <td style="background-color: #32383E">
+                                                  <button type="button" class="btn btn-success btn-sm" name="button" ng-disabled="!fileField"  ng-click="insertLineAsRow()">
+                                                    <b>INSERT AS ROW</b>
+                                                  </button>
+                                                </td>
+                                              </table>
+                                            </td>
+                                          </table>
+                        							</div>
+                        						</div>
+                        					</div>
+                        				</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

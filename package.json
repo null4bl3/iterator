@@ -1,0 +1,53 @@
+{
+  "name": "iterator",
+  "productName": "Iterator",
+  "version": "0.0.4",
+  "description": "database iterator",
+  "license": "MIT",
+  "repository": "null4bl3/iterator",
+  "author": {
+    "name": "null4bl3",
+    "email": "stokogsten@gmail.com",
+    "url": "https://github.com/null4bl3"
+  },
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --asar --overwrite --all"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "animate.css": "^3.5.2",
+    "bootstrap": "^3.3.7",
+    "bootstrap-sidebar": "^0.2.2-retry",
+    "electron-debug": "^1.0.0",
+    "jquery": "^3.1.1",
+    "material-icons": "^0.1.0",
+    "mysql": "^2.11.1",
+    "node-mysql": "^0.4.2",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "devtron": "^1.1.0",
+    "electron-packager": "^8.0.0",
+    "electron": "^1.3.3",
+    "xo": "^0.16.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
