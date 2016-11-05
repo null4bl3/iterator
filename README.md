@@ -11,5 +11,11 @@ Examine Database:
 Insert To Database:
 ![insert](https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131454.png)
 
-
+Iterate Text File
 ![iterate](https://github.com/null4bl3/iterator/raw/master/DeepinScreenshot20161104131625.png)
+
+
+
+
+
+License is Creative Commons Attribution + Noncommercial BY-NC
