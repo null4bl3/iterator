@@ -17,5 +17,16 @@ Iterate Text File
 
 
 
+ToDo:
+
+1. Adding option for NoSQL databases
+
+2. Option for more than one insertion field in file iteration
+
+3. Better support for remote SSL connections
+
+
+
+
 
 License is Creative Commons Attribution + Noncommercial BY-NC
