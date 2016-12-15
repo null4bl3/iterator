@@ -29,4 +29,4 @@ ToDo:
 
 
 
-License is Creative Commons Attribution + Noncommercial BY-NC
+License is AGPLv3
