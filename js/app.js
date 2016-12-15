@@ -11,7 +11,6 @@ var readline = require('readline');
 var _ = require('underscore');
 var remote = require('electron').remote;
 
-
 // ANGULAR JS SETUP AND CONTROLLER
 var APP = angular.module("APP", ['ngAnimate']).controller("MAIN", ['$scope', '$timeout', '$http', '$q', '$filter', function($scope, $timeout, $http, $q, $filter) {
 	$scope.username = "root";
@@ -34,6 +33,7 @@ var APP = angular.module("APP", ['ngAnimate']).controller("MAIN", ['$scope', '$t
 	$scope.counter = 0;
 	$scope.counterFile = 0;
 	$scope.numberOfLines = 0;
+	$scope.auto_inc = false;
 
 // STATE VALUES
 
@@ -70,9 +70,6 @@ var APP = angular.module("APP", ['ngAnimate']).controller("MAIN", ['$scope', '$t
 			connection.connect(function(err) {
 				if (err) {
 					if (err.code === "ECONNREFUSED") {
-						bad_alert("Login attempt refused !", "Either your credentials are incorrect, or MySQL is not running.");
-						$scope.connection_good = false;
-						$scope.$apply();
 					} else {
 						bad_alert("Error Connecting to Database", err.code);
 						$scope.connection_good = false;
@@ -134,6 +131,7 @@ var APP = angular.module("APP", ['ngAnimate']).controller("MAIN", ['$scope', '$t
 
 	$scope.tblChange = function(table) {
 		$scope.field_list = [];
+		$scope.table = "";
 		$scope.table = table;
 		var defer = $q.defer();
 		defer.promise.then(function() {
@@ -153,6 +151,7 @@ var APP = angular.module("APP", ['ngAnimate']).controller("MAIN", ['$scope', '$t
 						bad_alert("Error loading table structure from Database", err.code);
 						$scope.$apply();
 					} else {
+						$scope.file_field_list = [];
 						results.forEach(function(object) {
 							$scope.field_list.push(JSON.parse(JSON.stringify(object)));
 							if (object.Type.indexOf("text") != -1 || object.Type.indexOf("char") != -1) {
@@ -367,7 +366,11 @@ $scope.insertLineAsRow = function(){
 			console.log(err);
 			alert(err);
 		} else {
-			console.log(results);
+			good_alert("Line Inserted !");
+			if ($scope.auto_inc) {
+				$scope.counterFile++;
+			}
+			$scope.$apply();
 			$scope.getData();
 		}
 	});
@@ -535,7 +538,7 @@ $scope.exitProgram = function(){
 };
 
 $scope.about = function(){
-	alert("ITERATIOR - 2016. The simple MySQL file and table iterator. - null4bl3");
+	alert("ITERATOR - 2016. The simple MySQL file and table iterator. - null4bl3 --> https://github.com/null4bl3");
 };
 
 }]);

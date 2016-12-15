@@ -31,8 +31,8 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
-                      <img src="./images/iterator_small.png" alt="" />
-                        <b> ITERATOR</b>
+                      <img style="max-width: 100%; max-height: 18px" src="./images/iteratoren.png" alt="" />
+                        <b>ITERATOR </b>
                     </a>
                 </li>
                 <!-- WORK AROUND FOR HANDLING THE SCOPE DIFFERENCE IN ELECTRON -->
@@ -485,6 +485,10 @@
                                             </td>
                                             <td style="float:right" style="background-color: #32383E">
                                               <table style="background-color: #32383E">
+                                                <td width="160">
+                                                  <label for="checkbox" style="float:left; padding-right:5px">AUTO INCREMENT </label>
+                                                  <input type="checkbox" name="checkbox" value="false" ng-model="auto_inc">
+                                                </td>
                                                 <td width="200">
                                                   <select class="form-control" style="height: 35px; font-size: 12px" ng-model="fileField" name="fields" ng-options="field.Field for field in file_field_list" ng-change="setIDForFile()">
                                                     <option value="" selected hidden>
@@ -495,7 +499,7 @@
                                                 <td width="20" style="background-color: #32383E"></td>
                                                 <td style="background-color: #32383E">
                                                   <button type="button" class="btn btn-success btn-sm" name="button" ng-disabled="!fileField"  ng-click="insertLineAsRow()">
-                                                    <b>INSERT AS ROW</b>
+                                                    <b>INSERT ROW</b>
                                                   </button>
                                                 </td>
                                               </table>
